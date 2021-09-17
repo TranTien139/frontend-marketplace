@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { render } from 'react-dom'
+import { BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import {useWallet, UseWalletProvider} from 'use-wallet'
+import bsc from "@binance-chain/bsc-use-wallet";
+import Home from './views/home'
+import Category from './views/category'
+import Layout from './layout'
+import 'antd/dist/antd.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+    return (
+        <Providers>
+            <Router>
+                <Switch>
+                    <Route path="/" exact>
+                        <Home />
+                    </Route>
+                    <Route path="/boardroom" exact>
+                        <Category />
+                    </Route>
+                </Switch>
+            </Router>
+        </Providers>
+    );
+}
+
+// @ts-ignore
+const Providers:React.FC = ({children}) => {
+    return(<UseWalletProvider
+        connectors={{
+            bsc,
+            walletconnect: { rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545/' },
+        }}
+    >
+        {children}
+    </UseWalletProvider>)
 }
 
 export default App;
