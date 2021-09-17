@@ -4,7 +4,7 @@ import React from "react";
 const Home = ()=>{
     return (
         <Layout>
-            <div>Trang chủ</div>
+            <h2>Home page</h2>
         </Layout>
     )
 }

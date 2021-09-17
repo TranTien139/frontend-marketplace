@@ -1,5 +1,6 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import { Layout, Menu, Breadcrumb, Button, Modal } from 'antd';
+import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import {useWallet} from "use-wallet";
 const { Header, Content, Footer } = Layout;
@@ -19,42 +20,73 @@ const LayoutView = ({children})=>{
         setIsModalVisible(false);
     };
 
+    useEffect(()=>{
+        setIsModalVisible(false);
+    }, [account])
+
     const handleCancel = () => {
         setIsModalVisible(false);
     };
 
-    const onPresentAccountModal = ()=>{
-        console.log('acoount')
-    }
-        return (
-            <>
+    return (
+        <>
     <Layout className="layout">
-        <Header>
+        <HeaderCustom>
             <div className="logo" />
-            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-                <Menu.Item key={0}><Link to={'/'}>{`Home`}</Link></Menu.Item>
-                <Menu.Item key={1}><Link to ={'/category'}>{`Category`}</Link></Menu.Item>
-                <Menu.Item key={1000}>
+            <Menu theme="dark" className={"list-menu"} mode="horizontal" defaultSelectedKeys={['2']}>
+                <div><Link to={'/'}>{`Home`}</Link></div>
+                <div><Link to ={'/about'}>{`About`}</Link></div>
+                <div className="account">
                     {!account ? (
-                        <Button onClick={handleUnlockClick} className="colllect-wallet">Connect Wallet</Button>
+                        <Button onClick={handleUnlockClick} type="primary" className="colllect-wallet">Connect Wallet</Button>
                     ) : (
-                        <Button onClick={onPresentAccountModal} className="colllect-wallet">{account}</Button>
+                        <Button onClick={handleUnlockClick} type="primary" className="colllect-wallet">{account}</Button>
                     )}
-                </Menu.Item>
+                </div>
             </Menu>
-        </Header>
-        <Content style={{ padding: '0 50px' }}>
+        </HeaderCustom>
+        <Content style={{ padding: '30px 50px' }}>
             <div className="site-layout-content">
                 {children}
             </div>
         </Content>
-        <Modal title="Login" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-            <p><button onClick={() => wallet.connect('injected')}>MetaMask</button></p>
-            <p><button onClick={() => wallet.connect('wallletconnect')}>walllet connect</button></p>
+        <Modal title={!account ? "Login Wallet" : "My walllet"} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            {!account && <>
+            <ButtonLogin><Button onClick={() => wallet.connect('injected')} type="primary">MetaMask</Button></ButtonLogin>
+            <ButtonLogin><Button onClick={() => wallet.connect('walletconnect')} type="primary" >Wallet connect</Button></ButtonLogin>
+             </>}
+            {
+                account && <ButtonLogin><Button onClick={() => wallet.reset()} type="primary">Logout</Button></ButtonLogin>
+            }
         </Modal>
-        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+        <Footer style={{ textAlign: 'center' }}>©2020 Created by Tien Tran</Footer>
     </Layout>
-                </>
+            </>
         )
 }
+
+const HeaderCustom  = styled(Header)`
+    .list-menu {
+        display: block;
+        background: transparent;
+    >div{
+        float: left;
+        margin-right: 30px;
+        a{
+            color: #fff;
+            font-size: 20px;
+        }
+    }
+    .account{
+        float: right;
+    }
+    }
+`
+
+const ButtonLogin = styled.div`
+    button {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+`
 export default LayoutView

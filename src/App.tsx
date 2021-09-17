@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import {useWallet, UseWalletProvider} from 'use-wallet'
 import bsc from "@binance-chain/bsc-use-wallet";
 import Home from './views/home'
-import Category from './views/category'
+import About from './views/about'
 import Layout from './layout'
 import 'antd/dist/antd.css';
 
@@ -16,8 +16,8 @@ const App = () => {
                     <Route path="/" exact>
                         <Home />
                     </Route>
-                    <Route path="/category" exact>
-                        <Category />
+                    <Route path="/about" exact>
+                        <About />
                     </Route>
                 </Switch>
             </Router>
