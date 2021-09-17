@@ -1,5 +1,6 @@
 import React, {useCallback, useState} from "react";
 import { Layout, Menu, Breadcrumb, Button, Modal } from 'antd';
+import {Link} from 'react-router-dom'
 import {useWallet} from "use-wallet";
 const { Header, Content, Footer } = Layout;
 
@@ -31,8 +32,8 @@ const LayoutView = ({children})=>{
         <Header>
             <div className="logo" />
             <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-                <Menu.Item key={0}>{`Home`}</Menu.Item>
-                <Menu.Item key={1}>{`Category`}</Menu.Item>
+                <Menu.Item key={0}><Link to={'/'}>{`Home`}</Link></Menu.Item>
+                <Menu.Item key={1}><Link to ={'/category'}>{`Category`}</Link></Menu.Item>
                 <Menu.Item key={1000}>
                     {!account ? (
                         <Button onClick={handleUnlockClick} className="colllect-wallet">Connect Wallet</Button>
